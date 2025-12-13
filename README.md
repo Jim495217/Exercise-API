@@ -178,6 +178,317 @@ npm test
 
 
 ## Postman
+# Exercise Program API
+---
+
+## 🔐 Authentication Overview
+
+This API uses **JSON Web Tokens (JWT)** for authentication.
+
+### Authorization Header Format
+
+All protected routes require the following header:
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+Tokens are obtained via the **Login** endpoint.
+
+---
+
+## 👤 User Roles & Permissions
+
+| Role               | Permissions                    |
+| ------------------ | ------------------------------ |
+| Authenticated User | Full CRUD access to Exercises  |
+| Unauthenticated    | Cannot access protected routes |
+
+---
+
+# 🔑 AUTH ENDPOINTS
+
+## Register User
+
+**POST** `/api/auth/register`
+
+Creates a new user account.
+
+### Request Headers
+
+```
+Content-Type: application/json
+```
+
+### Request Body
+
+```json
+{
+  "username": "testuser",
+  "password": "password123"
+}
+```
+
+### Success Response (201 Created)
+
+```json
+{
+  "message": "User registered"
+}
+```
+
+### Error Responses
+
+* `400 Bad Request` — Missing fields
+* `500 Internal Server Error` — User already exists or server error
+
+---
+
+## Login User
+
+**POST** `/api/auth/login`
+
+Authenticates a user and returns a JWT token.
+
+### Request Headers
+
+```
+Content-Type: application/json
+```
+
+### Request Body
+
+```json
+{
+  "username": "testuser",
+  "password": "password123"
+}
+```
+
+### Success Response (200 OK)
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+### Error Responses
+
+* `401 Unauthorized` — Invalid credentials
+* `500 Internal Server Error`
+
+---
+
+# 🏋️ EXERCISE ENDPOINTS (CRUD)
+
+All Exercise endpoints **require authentication**.
+
+---
+
+## Create Exercise
+
+**POST** `/api/exercises`
+
+### Permissions
+
+* ✅ Authenticated users only
+
+### Headers
+
+```
+Content-Type: application/json
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Request Body
+
+```json
+{
+  "name": "Bench Press",
+  "muscleGroup": "Chest"
+}
+```
+
+### Success Response (201 Created)
+
+```json
+{
+  "id": 1,
+  "name": "Bench Press",
+  "muscleGroup": "Chest"
+}
+```
+
+### Error Responses
+
+* `400 Bad Request` — Missing required fields
+* `401 Unauthorized` — Missing or invalid token
+* `500 Internal Server Error`
+
+---
+
+## Get All Exercises
+
+**GET** `/api/exercises`
+
+### Permissions
+
+* ✅ Authenticated users only
+
+### Headers
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Success Response (200 OK)
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Bench Press",
+    "muscleGroup": "Chest"
+  }
+]
+```
+
+### Error Responses
+
+* `401 Unauthorized` — Missing token
+* `500 Internal Server Error`
+
+---
+
+## Get Exercise by ID
+
+**GET** `/api/exercises/:id`
+
+### Permissions
+
+* ✅ Authenticated users only
+
+### Headers
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Success Response (200 OK)
+
+```json
+{
+  "id": 1,
+  "name": "Bench Press",
+  "muscleGroup": "Chest"
+}
+```
+
+### Error Responses
+
+* `404 Not Found` — Exercise does not exist
+* `401 Unauthorized`
+
+---
+
+## Update Exercise
+
+**PUT** `/api/exercises/:id`
+
+### Permissions
+
+* ✅ Authenticated users only
+
+### Headers
+
+```
+Content-Type: application/json
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Request Body
+
+```json
+{
+  "name": "Incline Bench Press"
+}
+```
+
+### Success Response (200 OK)
+
+```json
+{
+  "id": 1,
+  "name": "Incline Bench Press",
+  "muscleGroup": "Chest"
+}
+```
+
+### Error Responses
+
+* `400 Bad Request` — Invalid data
+* `404 Not Found`
+* `401 Unauthorized`
+
+---
+
+## Delete Exercise
+
+**DELETE** `/api/exercises/:id`
+
+### Permissions
+
+* ✅ Authenticated users only
+
+### Headers
+
+```
+Authorization: Bearer <JWT_TOKEN>
+```
+
+### Success Response (200 OK)
+
+```json
+{
+  "message": "Exercise deleted successfully"
+}
+```
+
+### Error Responses
+
+* `404 Not Found`
+* `401 Unauthorized`
+* `500 Internal Server Error`
+
+---
+
+# 🚫 ERROR HANDLING EXAMPLES
+
+## Missing Token
+
+```json
+{
+  "error": "No token provided"
+}
+```
+
+Status: `401 Unauthorized`
+
+---
+
+## Invalid Exercise ID
+
+```json
+{
+  "error": "Exercise not found"
+}
+```
+
+Status: `404 Not Found`
+
+---
+
 
 
 ---
