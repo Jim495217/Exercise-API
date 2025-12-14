@@ -1,11 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const repController = require("../controllers/repController");
+const router = require("express").Router();
+const controller = require("../controllers/repController");
 
-router.get("/", repController.getAllReps);
-router.get("/:id", repController.getRepById);
-router.post("/", repController.createRep);
-router.put("/:id", repController.updateRep);
-router.delete("/:id", repController.deleteRep);
+router.post("/", controller.createRep);
+router.put("/:id", controller.updateRep);
+router.delete("/:id", controller.deleteRep);
 
 module.exports = router;
