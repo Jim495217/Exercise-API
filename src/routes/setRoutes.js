@@ -1,11 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const setController = require("../controllers/setController");
+const router = require("express").Router();
+const controller = require("../controllers/setController");
 
-router.get("/", setController.getAllSets);
-router.get("/:id", setController.getSetById);
-router.post("/", setController.createSet);
-router.put("/:id", setController.updateSet);
-router.delete("/:id", setController.deleteSet);
+router.post("/", controller.createSet);
+router.put("/:id", controller.updateSet);
+router.delete("/:id", controller.deleteSet);
 
 module.exports = router;
