@@ -1,15 +1,11 @@
 const { DataTypes } = require("sequelize");
+const sequelize = require("../db/connection");
 
-module.exports = (sequelize) => {
-  const Rep = sequelize.define("Rep", {
-    count: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    weight: {
-      type: DataTypes.FLOAT
-    }
-  });
+const Rep = sequelize.define("Rep", {
+  count: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  }
+});
 
-  return Rep;
-};
+module.exports = Rep;
