@@ -1,15 +1,15 @@
 const { DataTypes } = require("sequelize");
+const sequelize = require("../db/connection");
 
-module.exports = (sequelize) => {
-  const Exercise = sequelize.define("Exercise", {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    muscleGroup: {
-      type: DataTypes.STRING
-    }
-  });
+const Exercise = sequelize.define("Exercise", {
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  muscleGroup: {
+    type: DataTypes.STRING,
+    allowNull: false
+  }
+});
 
-  return Exercise;
-};
+module.exports = Exercise;
